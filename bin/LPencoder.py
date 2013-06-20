@@ -6,14 +6,13 @@ if __name__ == "__main__":
 	startTime = datetime.now()
 	#Code Time!
 	if len(sys.argv) < 6:
-		print "Not enough arguments\n LPencoder.py [input] [GameVolumeBoost] [VoiceVolumeBoost] [VoiceAudioPadding] [EndPosition] [TransformHD= std,lossless, no]"
+		print "Not enough arguments\n LPencoder.py [input] [GameVolumeBoost] [VoiceVolumeBoost] [VoiceAudioPadding] [TransformHD= std,lossless, no]"
 		sys.exit(1)
 	fileName        = sys.argv[1]
 	gameAudioBoost  = sys.argv[2]
 	voiceAudioBoost = sys.argv[3]
 	voicePadding    = sys.argv[4]
-	endPos          = sys.argv[5]
-	hdEncode        = (sys.argv[6]).lower() 
+	hdEncode        = (sys.argv[5]).lower() 
 	fileNoExt, ext  = os.path.splitext(fileName)
 	logFile         = fileNoExt+'log'+str(datetime.now())+'.txt'
 	toLogFile       = ' >> '+logFile
@@ -31,7 +30,7 @@ if __name__ == "__main__":
 	print 'Deleting temporal audio files'
 	os.system('del testa.wav testa2.wav')
 	print 'Adding Mixed Audio Track to Soundless Video'
-	os.system('mencoder -ovc copy -audiofile mixed.wav -oac copy -endpos '+endPos+' '+fileNoExt+'-nosound'+ext+' -o '+fileNoExt+'-new'+ext+toLogFile)
+	os.system('mencoder -ovc copy -audiofile mixed.wav -oac copy '+fileNoExt+'-nosound'+ext+' -o '+fileNoExt+'-new'+ext+toLogFile)
 	print 'Deleting video and audio mix temporal files'
 	os.system('del '+fileNoExt+'-nosound'+ext+' '+fileNoExt+'-gamesound.wav mixed.wav'+toLogFile)
 	#Optional HD encoding
