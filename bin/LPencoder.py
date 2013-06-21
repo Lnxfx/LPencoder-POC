@@ -28,10 +28,10 @@ if __name__ == "__main__":
 	
 	print 'Adjusting Video Game Audio Volume'
 	#os.system('mplayer -vo null -vc dump -af volume='+gameAudioBoost+' -ao pcm:file=testa.wav '+fileNoExt+'-gamesound.wav'+toLogFile)
-	os.system('sox -v '+volPerc+' '+fileNoExt+'-gamesound.wav testa.wav')
+	os.system('sox -v '+volPerc(gameAudioBoost)+' '+fileNoExt+'-gamesound.wav testa.wav')
 	print 'Adjusting Commentary Audio Volume'
 	#os.system('mplayer -vo null -vc dump -af volume='+voiceAudioBoost+' -ao pcm:file=testa2.wav '+fileNoExt+'-commentary.wav'+toLogFile)
-	os.system('sox -v '+volPerc+' '+fileNoExt+'-commentary.wav testa.wav')
+	os.system('sox -v '+volPerc(voiceAudioBoost)+' '+fileNoExt+'-commentary.wav testa.wav')
 	print 'Mixing the Video Game and Commentary audio'
 	os.system('sox -m testa.wav "|sox testa2.wav -p pad '+voicePadding+'" mixed.wav')
 	print 'Deleting temporal audio files'
