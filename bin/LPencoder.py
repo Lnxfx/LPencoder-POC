@@ -3,7 +3,7 @@ import sys
 from datetime import datetime
 
 def volPerc(per):
-	return str((100 + int(per))/100)
+	return str((100.0 + int(per))/100.0)
 	
 	
 if __name__ == "__main__":
