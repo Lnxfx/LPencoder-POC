@@ -2,6 +2,10 @@ import os
 import sys
 from datetime import datetime
 
+def volPerc(per):
+	return str((100 + int(per))/100)
+	
+	
 if __name__ == "__main__":
 	startTime = datetime.now()
 	#Code Time!
@@ -21,10 +25,13 @@ if __name__ == "__main__":
 	os.system('mencoder -ovc copy -nosound '+fileName+' -o '+fileNoExt+'-nosound'+ext+toLogFile)
 	print 'Saving game audio from video'
 	os.system('mplayer -vo null -vc dump -ao pcm:file="'+fileNoExt+'-gamesound.wav" '+fileName+toLogFile)
+	
 	print 'Adjusting Video Game Audio Volume'
-	os.system('mplayer -vo null -vc dump -af volume='+gameAudioBoost+' -ao pcm:file=testa.wav '+fileNoExt+'-gamesound.wav'+toLogFile)
+	#os.system('mplayer -vo null -vc dump -af volume='+gameAudioBoost+' -ao pcm:file=testa.wav '+fileNoExt+'-gamesound.wav'+toLogFile)
+	os.system('sox -v '+volPerc+' '+fileNoExt+'-gamesound.wav testa.wav')
 	print 'Adjusting Commentary Audio Volume'
-	os.system('mplayer -vo null -vc dump -af volume='+voiceAudioBoost+' -ao pcm:file=testa2.wav '+fileNoExt+'-commentary.wav'+toLogFile)
+	#os.system('mplayer -vo null -vc dump -af volume='+voiceAudioBoost+' -ao pcm:file=testa2.wav '+fileNoExt+'-commentary.wav'+toLogFile)
+	os.system('sox -v '+volPerc+' '+fileNoExt+'-commentary.wav testa.wav')
 	print 'Mixing the Video Game and Commentary audio'
 	os.system('sox -m testa.wav "|sox testa2.wav -p pad '+voicePadding+'" mixed.wav')
 	print 'Deleting temporal audio files'
