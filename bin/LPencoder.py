@@ -10,8 +10,9 @@ if __name__ == "__main__":
 	startTime = datetime.now()
 	#Code Time!
 	if len(sys.argv) < 6:
-		print "Not enough arguments\n LPencoder.py [input] [GameVolumeBoost] [VoiceVolumeBoost] [VoiceAudioPadding] [crop up:down:left:right or no] [TransformHD= std,lossless, no]"
+		print "Not enough arguments\n LPencoder.py [input] [GameVolumeBoost] [VoiceVolumeBoost] [VoiceAudioPadding] [crop Height:Width:X:Y or no] [TransformHD= std,lossless, no]"
 		sys.exit(1)
+	
 	fileName        = sys.argv[1]
 	gameAudioBoost  = sys.argv[2]
 	voiceAudioBoost = sys.argv[3]
@@ -27,12 +28,9 @@ if __name__ == "__main__":
 	os.system('mencoder -ovc copy -nosound '+fileName+' -o '+fileNoExt+'-nosound'+ext+toLogFile)
 	print 'Saving game audio from video'
 	os.system('mplayer -vo null -vc dump -ao pcm:file="'+fileNoExt+'-gamesound.wav" '+fileName+toLogFile)
-	
 	print 'Adjusting Video Game Audio Volume'
-	#os.system('mplayer -vo null -vc dump -af volume='+gameAudioBoost+' -ao pcm:file=testa.wav '+fileNoExt+'-gamesound.wav'+toLogFile)
 	os.system('sox -G -v '+volPerc(gameAudioBoost)+' '+fileNoExt+'-gamesound.wav testa.wav')
 	print 'Adjusting Commentary Audio Volume'
-	#os.system('mplayer -vo null -vc dump -af volume='+voiceAudioBoost+' -ao pcm:file=testa2.wav '+fileNoExt+'-commentary.wav'+toLogFile)
 	os.system('sox -G -v '+volPerc(voiceAudioBoost)+' '+fileNoExt+'-commentary.wav testa2.wav')
 	print 'Mixing the Video Game and Commentary audio'
 	os.system('sox -m testa.wav "|sox testa2.wav -p pad '+voicePadding+'" mixed.wav channels 1')
@@ -42,6 +40,7 @@ if __name__ == "__main__":
 	os.system('mencoder -ovc copy -audiofile mixed.wav -oac copy '+fileNoExt+'-nosound'+ext+' -o '+fileNoExt+'-new'+ext+toLogFile)
 	print 'Deleting video and audio mix temporal files'
 	os.system('del '+fileNoExt+'-nosound'+ext+' '+fileNoExt+'-gamesound.wav mixed.wav'+toLogFile)
+	#Optional Cropping
 	if crop != 'no':
 		print 'Cropping the video'
 		os.system('rename '+fileNoExt+'-new'+ext+' '+fileNoExt+'-uncrop'+ext)
