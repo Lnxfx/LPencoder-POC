@@ -24,9 +24,7 @@ if __name__ == "__main__":
 	toLogFile       = ' >> '+logFile
 		
 	#Processing de video and mixing the audio
-	print 'Stripping sound from video file'
-	os.system('mencoder -ovc copy -nosound '+fileName+' -o '+fileNoExt+'-nosound'+ext+toLogFile)
-	print 'Saving game audio from video'
+	print 'Extracting game audio from video'
 	os.system('mplayer -vo null -vc dump -ao pcm:file="'+fileNoExt+'-gamesound.wav" '+fileName+toLogFile)
 	print 'Adjusting Video Game Audio Volume'
 	os.system('sox -G -v '+volPerc(gameAudioBoost)+' '+fileNoExt+'-gamesound.wav testa.wav')
@@ -36,8 +34,8 @@ if __name__ == "__main__":
 	os.system('sox -m testa.wav "|sox testa2.wav -p pad '+voicePadding+'" mixed.wav channels 1')
 	print 'Deleting temporal audio files'
 	os.system('del testa.wav testa2.wav')
-	print 'Adding Mixed Audio Track to Soundless Video'
-	os.system('mencoder -ovc copy -audiofile mixed.wav -oac copy '+fileNoExt+'-nosound'+ext+' -o '+fileNoExt+'-new'+ext+toLogFile)
+	print 'Replacing Original Audio with Mixed Audio Track in Video'
+	os.system('mencoder -ovc copy -audiofile mixed.wav -oac copy -mc 0 '+fileName+' -o '+fileNoExt+'-new'+ext+toLogFile)
 	print 'Deleting video and audio mix temporal files'
 	os.system('del '+fileNoExt+'-nosound'+ext+' '+fileNoExt+'-gamesound.wav mixed.wav'+toLogFile)
 	#Optional Cropping
